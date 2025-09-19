@@ -4,13 +4,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat '"C:\Users\chanc\AppData\Local\Programs\Python\Python311\python.exe" install -r requirements.txt'
-
+                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" -m pip install -r requirements.txt'
             }
         }
         stage('Test') {
             steps {
-                 bat '"C:\Users\chanc\AppData\Local\Programs\Python\Python311\python.exe"'
+                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" -m pytest'
             }
         }
         stage('Package') {
