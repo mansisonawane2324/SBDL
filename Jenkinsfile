@@ -17,7 +17,8 @@ pipeline {
                 anyOf { branch "master"; branch "release" }
             }
             steps {
-                bat 'powershell Compress-Archive -Path lib -DestinationPath sbdl.zip -Force'
+                // Use Python to zip instead of PowerShell
+                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" -c "import shutil; shutil.make_archive(\'sbdl\', \'zip\', \'lib\')"'
             }
         }
     }
