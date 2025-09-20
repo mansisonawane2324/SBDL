@@ -4,12 +4,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" -m pip install -r requirements.txt'
+                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\Scripts\\pip.exe" install -r requirements.txt'
             }
         }
         stage('Test') {
             steps {
-                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" -m pytest'
+                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\Scripts\\pytest.exe"'
             }
         }
         stage('Package') {
@@ -17,7 +17,8 @@ pipeline {
                 anyOf { branch "master"; branch "release" }
             }
             steps {
-                bat 'powershell Compress-Archive -Path lib -DestinationPath sbdl.zip -Force'
+                // Use Python to zip instead of PowerShell
+                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" -c "import shutil; shutil.make_archive(\'sbdl\', \'zip\', \'lib\')"'
             }
         }
     }
