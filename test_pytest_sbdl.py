@@ -1,14 +1,12 @@
 import pytest
-
 from lib.Utils import get_spark_session
-
 
 @pytest.fixture(scope='session')
 def spark():
-    return get_spark_session("LOCAL")
-
+    spark_session = get_spark_session("LOCAL")
+    yield spark_session
+    spark_session.stop()
 
 def test_blank_test(spark):
-    print(spark.version)
-    # Check if Spark version starts with '4.'
-    assert spark.version.startswith("4.")
+    print("Spark Version:", spark.version)
+    assert spark.version.startswith("4.")  # ✅ Match your actual version
