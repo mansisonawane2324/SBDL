@@ -4,38 +4,21 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // Install dependencies
-                bat '"C:/Users/chanc/AppData/Local/Programs/Python/Python311/python.exe" -m pip install -r requirements.txt'
+                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\Scripts\\pip.exe" install -r requirements.txt'
             }
         }
-
         stage('Test') {
             steps {
-                // Run tests
-                bat '"C:/Users/chanc/AppData/Local/Programs/Python/Python311/python.exe" -m pytest || exit 0'
+                bat '"C:\\Users\\chanc\\AppData\\Local\\Programs\\Python\\Python311\\Scripts\\pytest.exe"'
             }
         }
-
         stage('Package') {
-            steps {
-                // Compress lib folder into a zip
-                bat 'powershell Compress-Archive -Path lib -DestinationPath sbdl.zip -Force'
-
-                // Save the zip as Jenkins artifact
-                archiveArtifacts artifacts: 'sbdl.zip', fingerprint: true
+            when {
+                anyOf { branch "master"; branch "release" }
             }
-        }
-    }
-
-    post {
-        success {
-            echo '✅ Build completed successfully!'
-        }
-        failure {
-            echo '❌ Build failed. Please check logs.'
-        }
-        always {
-            echo '📌 Pipeline finished (success or fail).'
+            steps {
+                bat 'powershell Compress-Archive -Path lib -DestinationPath sbdl.zip -Force'
+            }
         }
     }
 }
